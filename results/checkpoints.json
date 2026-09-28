@@ -1,0 +1,65 @@
+[
+  {
+    "name": "CP0",
+    "trigger": "genesis",
+    "success_count": 0,
+    "total_amount": 0,
+    "committed_ids": [],
+    "sha256": "a2508618051ac8dc36690380724a62cbda80313737b7dd94ab0ca43f3cfd50a4"
+  },
+  {
+    "name": "CP1",
+    "trigger": "every 5 successes",
+    "success_count": 5,
+    "total_amount": 103000,
+    "committed_ids": [
+      "T001",
+      "T002",
+      "T003",
+      "T004",
+      "T005"
+    ],
+    "sha256": "a49b740306530df2a7e907f2ece1b42b989c9c1225ed7e17a063001f3f4c2758"
+  },
+  {
+    "name": "CP2",
+    "trigger": "every 5 successes",
+    "success_count": 10,
+    "total_amount": 214000,
+    "committed_ids": [
+      "T001",
+      "T002",
+      "T003",
+      "T004",
+      "T005",
+      "T007",
+      "T008",
+      "T009",
+      "T010",
+      "T011"
+    ],
+    "sha256": "dc997243627ac7de86a979bcd7aa0006586bcf64c1c171d12793e91091ec96d7"
+  },
+  {
+    "name": "CP3",
+    "trigger": "end-of-batch flush",
+    "success_count": 13,
+    "total_amount": 287000,
+    "committed_ids": [
+      "T001",
+      "T002",
+      "T003",
+      "T004",
+      "T005",
+      "T007",
+      "T008",
+      "T009",
+      "T010",
+      "T011",
+      "T013",
+      "T014",
+      "T015"
+    ],
+    "sha256": "ac36c0689029d7160d47448d37aa2492e510a68171ee5000356974f33fe0eb67"
+  }
+]

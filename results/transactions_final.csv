@@ -1,0 +1,16 @@
+id,amount_kzt,failure_type,A_baseline,B_exceptions,C_retry,D_fault_tolerant,exception,recovery_action_D
+T001,12000,None,SUCCESS,SUCCESS,SUCCESS,SUCCESS,-,-
+T002,25000,Network,FAILED (crash),FAILED,SUCCESS after 1 retry,SUCCESS after 1 retry,NetworkFailureError,retry x1 (backoff)
+T003,8000,None,NOT PROCESSED,SUCCESS,SUCCESS,SUCCESS,-,-
+T004,45000,Timeout,NOT PROCESSED,FAILED,SUCCESS after 2 retries,SUCCESS after 2 retries,GatewayTimeoutError,retry x2 (backoff)
+T005,13000,None,NOT PROCESSED,SUCCESS,SUCCESS,SUCCESS,-,-
+T006,70000,Database,NOT PROCESSED,FAILED,FAILED,ROLLED BACK,DatabaseFailureError,"2 retries, then rollback to CP1"
+T007,9000,None,NOT PROCESSED,SUCCESS,SUCCESS,SUCCESS,-,-
+T008,31000,Network,NOT PROCESSED,FAILED,SUCCESS after 1 retry,SUCCESS after 1 retry,NetworkFailureError,retry x1 (backoff)
+T009,15000,None,NOT PROCESSED,SUCCESS,SUCCESS,SUCCESS,-,-
+T010,50000,Timeout,NOT PROCESSED,FAILED,SUCCESS after 2 retries,SUCCESS after 2 retries,GatewayTimeoutError,retry x2 (backoff)
+T011,6000,None,NOT PROCESSED,SUCCESS,SUCCESS,SUCCESS,-,-
+T012,80000,Database,NOT PROCESSED,FAILED,FAILED,ROLLED BACK,DatabaseFailureError,"2 retries, then rollback to CP2"
+T013,11000,None,NOT PROCESSED,SUCCESS,SUCCESS,SUCCESS,-,-
+T014,22000,None,NOT PROCESSED,SUCCESS,SUCCESS,SUCCESS,-,-
+T015,40000,Network,NOT PROCESSED,FAILED,SUCCESS after 1 retry,SUCCESS after 1 retry,NetworkFailureError,retry x1 (backoff)

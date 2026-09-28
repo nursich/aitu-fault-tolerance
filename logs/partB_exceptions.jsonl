@@ -1,0 +1,17 @@
+{"ts": "2026-09-28T17:35:41.129", "step": 1, "run": "B_exceptions", "level": "INFO", "event": "run_start", "mode": "B_exceptions", "transactions": 15}
+{"ts": "2026-09-28T17:35:41.129", "step": 2, "run": "B_exceptions", "level": "INFO", "event": "txn_success", "txn": "T001", "amount": 12000}
+{"ts": "2026-09-28T17:35:41.129", "step": 3, "run": "B_exceptions", "level": "ERROR", "event": "txn_failed", "txn": "T002", "failure": "Network", "exception": "NetworkFailureError", "stage": "process", "transient": true, "action": "continue_with_next"}
+{"ts": "2026-09-28T17:35:41.129", "step": 4, "run": "B_exceptions", "level": "INFO", "event": "txn_success", "txn": "T003", "amount": 8000}
+{"ts": "2026-09-28T17:35:41.129", "step": 5, "run": "B_exceptions", "level": "ERROR", "event": "txn_failed", "txn": "T004", "failure": "Timeout", "exception": "GatewayTimeoutError", "stage": "process", "transient": true, "action": "continue_with_next"}
+{"ts": "2026-09-28T17:35:41.129", "step": 6, "run": "B_exceptions", "level": "INFO", "event": "txn_success", "txn": "T005", "amount": 13000}
+{"ts": "2026-09-28T17:35:41.129", "step": 7, "run": "B_exceptions", "level": "ERROR", "event": "txn_failed", "txn": "T006", "failure": "Database", "exception": "DatabaseFailureError", "stage": "record", "transient": true, "action": "continue_with_next"}
+{"ts": "2026-09-28T17:35:41.129", "step": 8, "run": "B_exceptions", "level": "INFO", "event": "txn_success", "txn": "T007", "amount": 9000}
+{"ts": "2026-09-28T17:35:41.129", "step": 9, "run": "B_exceptions", "level": "ERROR", "event": "txn_failed", "txn": "T008", "failure": "Network", "exception": "NetworkFailureError", "stage": "process", "transient": true, "action": "continue_with_next"}
+{"ts": "2026-09-28T17:35:41.129", "step": 10, "run": "B_exceptions", "level": "INFO", "event": "txn_success", "txn": "T009", "amount": 15000}
+{"ts": "2026-09-28T17:35:41.129", "step": 11, "run": "B_exceptions", "level": "ERROR", "event": "txn_failed", "txn": "T010", "failure": "Timeout", "exception": "GatewayTimeoutError", "stage": "process", "transient": true, "action": "continue_with_next"}
+{"ts": "2026-09-28T17:35:41.130", "step": 12, "run": "B_exceptions", "level": "INFO", "event": "txn_success", "txn": "T011", "amount": 6000}
+{"ts": "2026-09-28T17:35:41.130", "step": 13, "run": "B_exceptions", "level": "ERROR", "event": "txn_failed", "txn": "T012", "failure": "Database", "exception": "DatabaseFailureError", "stage": "record", "transient": true, "action": "continue_with_next"}
+{"ts": "2026-09-28T17:35:41.130", "step": 14, "run": "B_exceptions", "level": "INFO", "event": "txn_success", "txn": "T013", "amount": 11000}
+{"ts": "2026-09-28T17:35:41.130", "step": 15, "run": "B_exceptions", "level": "INFO", "event": "txn_success", "txn": "T014", "amount": 22000}
+{"ts": "2026-09-28T17:35:41.130", "step": 16, "run": "B_exceptions", "level": "ERROR", "event": "txn_failed", "txn": "T015", "failure": "Network", "exception": "NetworkFailureError", "stage": "process", "transient": true, "action": "continue_with_next"}
+{"ts": "2026-09-28T17:35:41.130", "step": 17, "run": "B_exceptions", "level": "WARNING", "event": "run_end", "mode": "B_exceptions", "transactions_total": 15, "transactions_attempted": 15, "successful": 8, "lost_or_failed": 7, "processed_amount_kzt": 96000, "lost_amount_kzt": 341000, "retries": 0, "rollbacks": 0, "completion_rate": 0.5333, "ledger_consistent": false, "orphan_rows": ["T006", "T012"], "duplicates_suppressed": 0}

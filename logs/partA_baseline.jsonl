@@ -1,0 +1,6 @@
+{"ts": "2026-09-28T17:35:41.129", "step": 1, "run": "A_baseline", "level": "INFO", "event": "run_start", "mode": "A_baseline", "transactions": 15}
+{"ts": "2026-09-28T17:35:41.129", "step": 2, "run": "A_baseline", "level": "INFO", "event": "txn_start", "txn": "T001", "amount": 12000}
+{"ts": "2026-09-28T17:35:41.129", "step": 3, "run": "A_baseline", "level": "INFO", "event": "txn_success", "txn": "T001"}
+{"ts": "2026-09-28T17:35:41.129", "step": 4, "run": "A_baseline", "level": "INFO", "event": "txn_start", "txn": "T002", "amount": 25000}
+{"ts": "2026-09-28T17:35:41.129", "step": 5, "run": "A_baseline", "level": "CRITICAL", "event": "processor_crashed", "txn": "T002", "exception": "NetworkFailureError", "message": "Network failure in process stage of T002 (attempt 0)"}
+{"ts": "2026-09-28T17:35:41.129", "step": 6, "run": "A_baseline", "level": "INFO", "event": "run_end", "mode": "A_baseline", "transactions_total": 15, "transactions_attempted": 2, "successful": 1, "lost_or_failed": 14, "processed_amount_kzt": 12000, "lost_amount_kzt": 425000, "retries": 0, "rollbacks": 0, "completion_rate": 0.0667, "ledger_consistent": true, "orphan_rows": [], "duplicates_suppressed": 0}

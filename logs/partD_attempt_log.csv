@@ -1,0 +1,27 @@
+step,timestamp,transaction,amount_kzt,attempt,failure,action,result
+2,2026-09-28T17:35:42.636,T001,12000,Initial,None,Validate -> Process -> Record,SUCCESS
+3,2026-09-28T17:35:42.636,T002,25000,Initial,NetworkFailureError,backoff 0.1s -> Retry 1,FAIL
+4,2026-09-28T17:35:42.736,T002,25000,Retry 1,NetworkFailureError,Validate -> Process -> Record,SUCCESS
+5,2026-09-28T17:35:42.737,T003,8000,Initial,None,Validate -> Process -> Record,SUCCESS
+6,2026-09-28T17:35:42.737,T004,45000,Initial,GatewayTimeoutError,backoff 0.1s -> Retry 1,FAIL
+7,2026-09-28T17:35:42.837,T004,45000,Retry 1,GatewayTimeoutError,backoff 0.2s -> Retry 2,FAIL
+8,2026-09-28T17:35:43.037,T004,45000,Retry 2,GatewayTimeoutError,Validate -> Process -> Record,SUCCESS
+9,2026-09-28T17:35:43.038,T005,13000,Initial,None,Validate -> Process -> Record,SUCCESS
+11,2026-09-28T17:35:43.039,T006,70000,Initial,DatabaseFailureError,backoff 0.1s -> Retry 1,FAIL
+12,2026-09-28T17:35:43.139,T006,70000,Retry 1,DatabaseFailureError,backoff 0.2s -> Retry 2,FAIL
+13,2026-09-28T17:35:43.340,T006,70000,Retry 2,DatabaseFailureError,retries exhausted -> rollback to CP1,ROLLBACK
+14,2026-09-28T17:35:43.340,T007,9000,Initial,None,Validate -> Process -> Record,SUCCESS
+15,2026-09-28T17:35:43.340,T008,31000,Initial,NetworkFailureError,backoff 0.1s -> Retry 1,FAIL
+16,2026-09-28T17:35:43.441,T008,31000,Retry 1,NetworkFailureError,Validate -> Process -> Record,SUCCESS
+17,2026-09-28T17:35:43.441,T009,15000,Initial,None,Validate -> Process -> Record,SUCCESS
+18,2026-09-28T17:35:43.441,T010,50000,Initial,GatewayTimeoutError,backoff 0.1s -> Retry 1,FAIL
+19,2026-09-28T17:35:43.541,T010,50000,Retry 1,GatewayTimeoutError,backoff 0.2s -> Retry 2,FAIL
+20,2026-09-28T17:35:43.742,T010,50000,Retry 2,GatewayTimeoutError,Validate -> Process -> Record,SUCCESS
+21,2026-09-28T17:35:43.742,T011,6000,Initial,None,Validate -> Process -> Record,SUCCESS
+23,2026-09-28T17:35:43.742,T012,80000,Initial,DatabaseFailureError,backoff 0.1s -> Retry 1,FAIL
+24,2026-09-28T17:35:43.843,T012,80000,Retry 1,DatabaseFailureError,backoff 0.2s -> Retry 2,FAIL
+25,2026-09-28T17:35:44.044,T012,80000,Retry 2,DatabaseFailureError,retries exhausted -> rollback to CP2,ROLLBACK
+26,2026-09-28T17:35:44.044,T013,11000,Initial,None,Validate -> Process -> Record,SUCCESS
+27,2026-09-28T17:35:44.044,T014,22000,Initial,None,Validate -> Process -> Record,SUCCESS
+28,2026-09-28T17:35:44.044,T015,40000,Initial,NetworkFailureError,backoff 0.1s -> Retry 1,FAIL
+29,2026-09-28T17:35:44.145,T015,40000,Retry 1,NetworkFailureError,Validate -> Process -> Record,SUCCESS

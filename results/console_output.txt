@@ -1,0 +1,113 @@
+
+====================================================================================================
+PART A - Baseline (no fault tolerance)
+====================================================================================================
+[17:35:41.129] #001 INFO     A_baseline         run_start              mode=A_baseline transactions=15
+[17:35:41.129] #002 INFO     A_baseline         txn_start              txn=T001 amount=12000
+[17:35:41.129] #003 INFO     A_baseline         txn_success            txn=T001
+[17:35:41.129] #004 INFO     A_baseline         txn_start              txn=T002 amount=25000
+[17:35:41.129] #005 CRITICAL A_baseline         processor_crashed      txn=T002 exception=NetworkFailureError message=Network failure in process stage of T002 (attempt 0)
+[17:35:41.129] #006 INFO     A_baseline         run_end                mode=A_baseline transactions_total=15 transactions_attempted=2 successful=1 lost_or_failed=14 processed_amount_kzt=12000 lost_amount_kzt=425000 retries=0 rollbacks=0 completion_rate=0.0667 ledger_consistent=True orphan_rows=[] duplicates_suppressed=0
+
+====================================================================================================
+PART B - Exception handling (try/except + classification + continue)
+====================================================================================================
+[17:35:41.129] #001 INFO     B_exceptions       run_start              mode=B_exceptions transactions=15
+[17:35:41.129] #002 INFO     B_exceptions       txn_success            txn=T001 amount=12000
+[17:35:41.129] #003 ERROR    B_exceptions       txn_failed             txn=T002 failure=Network exception=NetworkFailureError stage=process transient=True action=continue_with_next
+[17:35:41.129] #004 INFO     B_exceptions       txn_success            txn=T003 amount=8000
+[17:35:41.129] #005 ERROR    B_exceptions       txn_failed             txn=T004 failure=Timeout exception=GatewayTimeoutError stage=process transient=True action=continue_with_next
+[17:35:41.129] #006 INFO     B_exceptions       txn_success            txn=T005 amount=13000
+[17:35:41.129] #007 ERROR    B_exceptions       txn_failed             txn=T006 failure=Database exception=DatabaseFailureError stage=record transient=True action=continue_with_next
+[17:35:41.129] #008 INFO     B_exceptions       txn_success            txn=T007 amount=9000
+[17:35:41.129] #009 ERROR    B_exceptions       txn_failed             txn=T008 failure=Network exception=NetworkFailureError stage=process transient=True action=continue_with_next
+[17:35:41.129] #010 INFO     B_exceptions       txn_success            txn=T009 amount=15000
+[17:35:41.129] #011 ERROR    B_exceptions       txn_failed             txn=T010 failure=Timeout exception=GatewayTimeoutError stage=process transient=True action=continue_with_next
+[17:35:41.130] #012 INFO     B_exceptions       txn_success            txn=T011 amount=6000
+[17:35:41.130] #013 ERROR    B_exceptions       txn_failed             txn=T012 failure=Database exception=DatabaseFailureError stage=record transient=True action=continue_with_next
+[17:35:41.130] #014 INFO     B_exceptions       txn_success            txn=T013 amount=11000
+[17:35:41.130] #015 INFO     B_exceptions       txn_success            txn=T014 amount=22000
+[17:35:41.130] #016 ERROR    B_exceptions       txn_failed             txn=T015 failure=Network exception=NetworkFailureError stage=process transient=True action=continue_with_next
+[17:35:41.130] #017 WARNING  B_exceptions       run_end                mode=B_exceptions transactions_total=15 transactions_attempted=15 successful=8 lost_or_failed=7 processed_amount_kzt=96000 lost_amount_kzt=341000 retries=0 rollbacks=0 completion_rate=0.5333 ledger_consistent=False orphan_rows=['T006', 'T012'] duplicates_suppressed=0
+
+====================================================================================================
+PART C - Retry mechanism (exact fault-rule policy)
+====================================================================================================
+[17:35:41.130] #001 INFO     C_retry            run_start              mode=C_retry max_retries=2 backoff=0.1s x2.0 checkpoint_interval=None
+[17:35:41.130] #002 INFO     C_retry            attempt_success        txn=T001 attempt=Initial amount=12000 total=12000
+[17:35:41.130] #003 WARNING  C_retry            attempt_failed         txn=T002 attempt=Initial exception=NetworkFailureError stage=process next=retry in 0.1s
+[17:35:41.230] #004 INFO     C_retry            attempt_success        txn=T002 attempt=Retry 1 amount=25000 total=37000
+[17:35:41.230] #005 INFO     C_retry            attempt_success        txn=T003 attempt=Initial amount=8000 total=45000
+[17:35:41.230] #006 WARNING  C_retry            attempt_failed         txn=T004 attempt=Initial exception=GatewayTimeoutError stage=process next=retry in 0.1s
+[17:35:41.331] #007 WARNING  C_retry            attempt_failed         txn=T004 attempt=Retry 1 exception=GatewayTimeoutError stage=process next=retry in 0.2s
+[17:35:41.531] #008 INFO     C_retry            attempt_success        txn=T004 attempt=Retry 2 amount=45000 total=90000
+[17:35:41.531] #009 INFO     C_retry            attempt_success        txn=T005 attempt=Initial amount=13000 total=103000
+[17:35:41.531] #010 WARNING  C_retry            attempt_failed         txn=T006 attempt=Initial exception=DatabaseFailureError stage=record next=retry in 0.1s
+[17:35:41.632] #011 WARNING  C_retry            attempt_failed         txn=T006 attempt=Retry 1 exception=DatabaseFailureError stage=record next=retry in 0.2s
+[17:35:41.832] #012 ERROR    C_retry            txn_failed             txn=T006 attempt=Retry 2 exception=DatabaseFailureError
+[17:35:41.832] #013 INFO     C_retry            attempt_success        txn=T007 attempt=Initial amount=9000 total=112000
+[17:35:41.832] #014 WARNING  C_retry            attempt_failed         txn=T008 attempt=Initial exception=NetworkFailureError stage=process next=retry in 0.1s
+[17:35:41.933] #015 INFO     C_retry            attempt_success        txn=T008 attempt=Retry 1 amount=31000 total=143000
+[17:35:41.933] #016 INFO     C_retry            attempt_success        txn=T009 attempt=Initial amount=15000 total=158000
+[17:35:41.933] #017 WARNING  C_retry            attempt_failed         txn=T010 attempt=Initial exception=GatewayTimeoutError stage=process next=retry in 0.1s
+[17:35:42.033] #018 WARNING  C_retry            attempt_failed         txn=T010 attempt=Retry 1 exception=GatewayTimeoutError stage=process next=retry in 0.2s
+[17:35:42.234] #019 INFO     C_retry            attempt_success        txn=T010 attempt=Retry 2 amount=50000 total=208000
+[17:35:42.234] #020 INFO     C_retry            attempt_success        txn=T011 attempt=Initial amount=6000 total=214000
+[17:35:42.234] #021 WARNING  C_retry            attempt_failed         txn=T012 attempt=Initial exception=DatabaseFailureError stage=record next=retry in 0.1s
+[17:35:42.334] #022 WARNING  C_retry            attempt_failed         txn=T012 attempt=Retry 1 exception=DatabaseFailureError stage=record next=retry in 0.2s
+[17:35:42.534] #023 ERROR    C_retry            txn_failed             txn=T012 attempt=Retry 2 exception=DatabaseFailureError
+[17:35:42.535] #024 INFO     C_retry            attempt_success        txn=T013 attempt=Initial amount=11000 total=225000
+[17:35:42.535] #025 INFO     C_retry            attempt_success        txn=T014 attempt=Initial amount=22000 total=247000
+[17:35:42.535] #026 WARNING  C_retry            attempt_failed         txn=T015 attempt=Initial exception=NetworkFailureError stage=process next=retry in 0.1s
+[17:35:42.635] #027 INFO     C_retry            attempt_success        txn=T015 attempt=Retry 1 amount=40000 total=287000
+[17:35:42.635] #028 WARNING  C_retry            run_end                mode=C_retry transactions_total=15 transactions_attempted=15 successful=13 lost_or_failed=2 processed_amount_kzt=287000 lost_amount_kzt=150000 retries=11 rollbacks=0 completion_rate=0.8667 ledger_consistent=False orphan_rows=['T006', 'T012'] duplicates_suppressed=4
+
+====================================================================================================
+PART D - Retry + Checkpoint (every 5 successes) + Rollback (final solution)
+====================================================================================================
+[17:35:42.636] #001 INFO     D_fault_tolerant   run_start              mode=D_fault_tolerant max_retries=2 backoff=0.1s x2.0 checkpoint_interval=5
+[17:35:42.636] #002 INFO     D_fault_tolerant   attempt_success        txn=T001 attempt=Initial amount=12000 total=12000
+[17:35:42.636] #003 WARNING  D_fault_tolerant   attempt_failed         txn=T002 attempt=Initial exception=NetworkFailureError stage=process next=retry in 0.1s
+[17:35:42.736] #004 INFO     D_fault_tolerant   attempt_success        txn=T002 attempt=Retry 1 amount=25000 total=37000
+[17:35:42.737] #005 INFO     D_fault_tolerant   attempt_success        txn=T003 attempt=Initial amount=8000 total=45000
+[17:35:42.737] #006 WARNING  D_fault_tolerant   attempt_failed         txn=T004 attempt=Initial exception=GatewayTimeoutError stage=process next=retry in 0.1s
+[17:35:42.837] #007 WARNING  D_fault_tolerant   attempt_failed         txn=T004 attempt=Retry 1 exception=GatewayTimeoutError stage=process next=retry in 0.2s
+[17:35:43.037] #008 INFO     D_fault_tolerant   attempt_success        txn=T004 attempt=Retry 2 amount=45000 total=90000
+[17:35:43.038] #009 INFO     D_fault_tolerant   attempt_success        txn=T005 attempt=Initial amount=13000 total=103000
+[17:35:43.039] #010 INFO     D_fault_tolerant   checkpoint             name=CP1 success_count=5 total_amount=103000 sha256=a49b74030653
+[17:35:43.039] #011 WARNING  D_fault_tolerant   attempt_failed         txn=T006 attempt=Initial exception=DatabaseFailureError stage=record next=retry in 0.1s
+[17:35:43.139] #012 WARNING  D_fault_tolerant   attempt_failed         txn=T006 attempt=Retry 1 exception=DatabaseFailureError stage=record next=retry in 0.2s
+[17:35:43.340] #013 ERROR    D_fault_tolerant   rollback               txn=T006 attempt=Retry 2 exception=DatabaseFailureError checkpoint=CP1 discarded_rows=['T006'] replayed=[] ledger_consistent=True
+[17:35:43.340] #014 INFO     D_fault_tolerant   attempt_success        txn=T007 attempt=Initial amount=9000 total=112000
+[17:35:43.340] #015 WARNING  D_fault_tolerant   attempt_failed         txn=T008 attempt=Initial exception=NetworkFailureError stage=process next=retry in 0.1s
+[17:35:43.441] #016 INFO     D_fault_tolerant   attempt_success        txn=T008 attempt=Retry 1 amount=31000 total=143000
+[17:35:43.441] #017 INFO     D_fault_tolerant   attempt_success        txn=T009 attempt=Initial amount=15000 total=158000
+[17:35:43.441] #018 WARNING  D_fault_tolerant   attempt_failed         txn=T010 attempt=Initial exception=GatewayTimeoutError stage=process next=retry in 0.1s
+[17:35:43.541] #019 WARNING  D_fault_tolerant   attempt_failed         txn=T010 attempt=Retry 1 exception=GatewayTimeoutError stage=process next=retry in 0.2s
+[17:35:43.742] #020 INFO     D_fault_tolerant   attempt_success        txn=T010 attempt=Retry 2 amount=50000 total=208000
+[17:35:43.742] #021 INFO     D_fault_tolerant   attempt_success        txn=T011 attempt=Initial amount=6000 total=214000
+[17:35:43.742] #022 INFO     D_fault_tolerant   checkpoint             name=CP2 success_count=10 total_amount=214000 sha256=dc997243627a
+[17:35:43.742] #023 WARNING  D_fault_tolerant   attempt_failed         txn=T012 attempt=Initial exception=DatabaseFailureError stage=record next=retry in 0.1s
+[17:35:43.843] #024 WARNING  D_fault_tolerant   attempt_failed         txn=T012 attempt=Retry 1 exception=DatabaseFailureError stage=record next=retry in 0.2s
+[17:35:44.044] #025 ERROR    D_fault_tolerant   rollback               txn=T012 attempt=Retry 2 exception=DatabaseFailureError checkpoint=CP2 discarded_rows=['T012'] replayed=[] ledger_consistent=True
+[17:35:44.044] #026 INFO     D_fault_tolerant   attempt_success        txn=T013 attempt=Initial amount=11000 total=225000
+[17:35:44.044] #027 INFO     D_fault_tolerant   attempt_success        txn=T014 attempt=Initial amount=22000 total=247000
+[17:35:44.044] #028 WARNING  D_fault_tolerant   attempt_failed         txn=T015 attempt=Initial exception=NetworkFailureError stage=process next=retry in 0.1s
+[17:35:44.145] #029 INFO     D_fault_tolerant   attempt_success        txn=T015 attempt=Retry 1 amount=40000 total=287000
+[17:35:44.145] #030 INFO     D_fault_tolerant   checkpoint             name=CP3 trigger=end-of-batch flush success_count=13 total_amount=287000 sha256=ac36c0689029
+[17:35:44.145] #031 INFO     D_fault_tolerant   run_end                mode=D_fault_tolerant transactions_total=15 transactions_attempted=15 successful=13 lost_or_failed=2 processed_amount_kzt=287000 lost_amount_kzt=150000 retries=11 rollbacks=2 completion_rate=0.8667 ledger_consistent=True orphan_rows=[] duplicates_suppressed=4
+
+====================================================================================================
+PART E - Before / After
+====================================================================================================
+Metric                            Baseline    Fault-tolerant   Improvement
+Successful transactions                  1                13   +12
+Failed / lost transactions              14                 2   -12 (85.71% less)
+Lost amount (KZT)                  425,000           150,000   -275,000 (64.71% less)
+Retries                                  0                11   +11 (recovery attempts)
+Rollbacks                                0                 2   +2 (consistent state kept)
+Completion rate                      6.67%            86.67%   +80.0 pp
+
+Ablation: A=1  B=8  C=13  D=13 successful
+Ledger consistent: B=False ['T006', 'T012']  C=False ['T006', 'T012']  D=True []
+Commit: 2618a6f   Python 3.11.15

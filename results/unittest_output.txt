@@ -1,0 +1,17 @@
+test_baseline_stops_at_first_failure (test_fault_tolerance.PartA.test_baseline_stops_at_first_failure) ... ok
+test_processing_continues_after_failure (test_fault_tolerance.PartB.test_processing_continues_after_failure) ... ok
+test_backoff (test_fault_tolerance.PartC.test_backoff) ... ok
+test_exact_retry_policy (test_fault_tolerance.PartC.test_exact_retry_policy) ... ok
+test_validation_error_is_not_retried (test_fault_tolerance.PartC.test_validation_error_is_not_retried) ... ok
+test_checkpoints_and_rollbacks (test_fault_tolerance.PartD.test_checkpoints_and_rollbacks) ... ok
+test_corrupted_checkpoint_is_skipped (test_fault_tolerance.PartD.test_corrupted_checkpoint_is_skipped) ... ok
+test_idempotent_record (test_fault_tolerance.PartD.test_idempotent_record) ... ok
+test_rollback_does_not_duplicate_checkpoint (test_fault_tolerance.PartD.test_rollback_does_not_duplicate_checkpoint)
+Guard: a rollback must never create a duplicate checkpoint. ... ok
+test_rollback_replays_journal (test_fault_tolerance.PartD.test_rollback_replays_journal)
+Work committed after the checkpoint survives the rollback (redo journal). ... ok
+
+----------------------------------------------------------------------
+Ran 10 tests in 0.004s
+
+OK

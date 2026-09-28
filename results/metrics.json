@@ -1,0 +1,233 @@
+{
+  "meta": {
+    "started": "2026-09-28T17:35:41",
+    "commit": "2618a6f",
+    "python": "3.11.15",
+    "source": "run_all.py + ft/*.py",
+    "finished": "2026-09-28T17:35:44"
+  },
+  "A": {
+    "mode": "A_baseline",
+    "transactions_total": 15,
+    "transactions_attempted": 2,
+    "successful": 1,
+    "lost_or_failed": 14,
+    "processed_amount_kzt": 12000,
+    "lost_amount_kzt": 425000,
+    "retries": 0,
+    "rollbacks": 0,
+    "completion_rate": 0.0667,
+    "ledger_consistent": true,
+    "orphan_rows": [],
+    "duplicates_suppressed": 0,
+    "status": {
+      "T001": "SUCCESS",
+      "T002": "FAILED (crash)",
+      "T003": "NOT PROCESSED",
+      "T004": "NOT PROCESSED",
+      "T005": "NOT PROCESSED",
+      "T006": "NOT PROCESSED",
+      "T007": "NOT PROCESSED",
+      "T008": "NOT PROCESSED",
+      "T009": "NOT PROCESSED",
+      "T010": "NOT PROCESSED",
+      "T011": "NOT PROCESSED",
+      "T012": "NOT PROCESSED",
+      "T013": "NOT PROCESSED",
+      "T014": "NOT PROCESSED",
+      "T015": "NOT PROCESSED"
+    }
+  },
+  "B": {
+    "mode": "B_exceptions",
+    "transactions_total": 15,
+    "transactions_attempted": 15,
+    "successful": 8,
+    "lost_or_failed": 7,
+    "processed_amount_kzt": 96000,
+    "lost_amount_kzt": 341000,
+    "retries": 0,
+    "rollbacks": 0,
+    "completion_rate": 0.5333,
+    "ledger_consistent": false,
+    "orphan_rows": [
+      "T006",
+      "T012"
+    ],
+    "duplicates_suppressed": 0,
+    "status": {
+      "T001": "SUCCESS",
+      "T002": "FAILED",
+      "T003": "SUCCESS",
+      "T004": "FAILED",
+      "T005": "SUCCESS",
+      "T006": "FAILED",
+      "T007": "SUCCESS",
+      "T008": "FAILED",
+      "T009": "SUCCESS",
+      "T010": "FAILED",
+      "T011": "SUCCESS",
+      "T012": "FAILED",
+      "T013": "SUCCESS",
+      "T014": "SUCCESS",
+      "T015": "FAILED"
+    }
+  },
+  "C": {
+    "mode": "C_retry",
+    "transactions_total": 15,
+    "transactions_attempted": 15,
+    "successful": 13,
+    "lost_or_failed": 2,
+    "processed_amount_kzt": 287000,
+    "lost_amount_kzt": 150000,
+    "retries": 11,
+    "rollbacks": 0,
+    "completion_rate": 0.8667,
+    "ledger_consistent": false,
+    "orphan_rows": [
+      "T006",
+      "T012"
+    ],
+    "duplicates_suppressed": 4,
+    "status": {
+      "T001": "SUCCESS",
+      "T002": "SUCCESS after 1 retry",
+      "T003": "SUCCESS",
+      "T004": "SUCCESS after 2 retries",
+      "T005": "SUCCESS",
+      "T006": "FAILED",
+      "T007": "SUCCESS",
+      "T008": "SUCCESS after 1 retry",
+      "T009": "SUCCESS",
+      "T010": "SUCCESS after 2 retries",
+      "T011": "SUCCESS",
+      "T012": "FAILED",
+      "T013": "SUCCESS",
+      "T014": "SUCCESS",
+      "T015": "SUCCESS after 1 retry"
+    }
+  },
+  "D": {
+    "mode": "D_fault_tolerant",
+    "transactions_total": 15,
+    "transactions_attempted": 15,
+    "successful": 13,
+    "lost_or_failed": 2,
+    "processed_amount_kzt": 287000,
+    "lost_amount_kzt": 150000,
+    "retries": 11,
+    "rollbacks": 2,
+    "completion_rate": 0.8667,
+    "ledger_consistent": true,
+    "orphan_rows": [],
+    "duplicates_suppressed": 4,
+    "status": {
+      "T001": "SUCCESS",
+      "T002": "SUCCESS after 1 retry",
+      "T003": "SUCCESS",
+      "T004": "SUCCESS after 2 retries",
+      "T005": "SUCCESS",
+      "T006": "ROLLED BACK",
+      "T007": "SUCCESS",
+      "T008": "SUCCESS after 1 retry",
+      "T009": "SUCCESS",
+      "T010": "SUCCESS after 2 retries",
+      "T011": "SUCCESS",
+      "T012": "ROLLED BACK",
+      "T013": "SUCCESS",
+      "T014": "SUCCESS",
+      "T015": "SUCCESS after 1 retry"
+    }
+  },
+  "checkpoints": [
+    {
+      "name": "CP0",
+      "trigger": "genesis",
+      "success_count": 0,
+      "total_amount": 0,
+      "committed_ids": [],
+      "sha256": "a2508618051ac8dc36690380724a62cbda80313737b7dd94ab0ca43f3cfd50a4"
+    },
+    {
+      "name": "CP1",
+      "trigger": "every 5 successes",
+      "success_count": 5,
+      "total_amount": 103000,
+      "committed_ids": [
+        "T001",
+        "T002",
+        "T003",
+        "T004",
+        "T005"
+      ],
+      "sha256": "a49b740306530df2a7e907f2ece1b42b989c9c1225ed7e17a063001f3f4c2758"
+    },
+    {
+      "name": "CP2",
+      "trigger": "every 5 successes",
+      "success_count": 10,
+      "total_amount": 214000,
+      "committed_ids": [
+        "T001",
+        "T002",
+        "T003",
+        "T004",
+        "T005",
+        "T007",
+        "T008",
+        "T009",
+        "T010",
+        "T011"
+      ],
+      "sha256": "dc997243627ac7de86a979bcd7aa0006586bcf64c1c171d12793e91091ec96d7"
+    },
+    {
+      "name": "CP3",
+      "trigger": "end-of-batch flush",
+      "success_count": 13,
+      "total_amount": 287000,
+      "committed_ids": [
+        "T001",
+        "T002",
+        "T003",
+        "T004",
+        "T005",
+        "T007",
+        "T008",
+        "T009",
+        "T010",
+        "T011",
+        "T013",
+        "T014",
+        "T015"
+      ],
+      "sha256": "ac36c0689029d7160d47448d37aa2492e510a68171ee5000356974f33fe0eb67"
+    }
+  ],
+  "partE": {
+    "recovery_improvement_pp": 80.0,
+    "recovery_rate_of_faulty": "5/7 = 71.43%",
+    "transaction_loss_reduction": "85.71%",
+    "amount_loss_reduction": "64.71%",
+    "gain_exception_handling_txn": 7,
+    "gain_exception_handling_kzt": 84000,
+    "gain_retry_txn": 5,
+    "gain_retry_kzt": 191000,
+    "gain_checkpoint_txn": 0,
+    "consistency_C": false,
+    "orphans_C": [
+      "T006",
+      "T012"
+    ],
+    "consistency_D": true,
+    "orphans_D": [],
+    "recovered": [
+      "T002",
+      "T004",
+      "T008",
+      "T010",
+      "T015"
+    ]
+  }
+}
